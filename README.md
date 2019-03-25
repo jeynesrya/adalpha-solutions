@@ -1,0 +1,1 @@
+# AdAlpha Solutions Tech Task
