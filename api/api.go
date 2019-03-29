@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"time"
@@ -13,11 +14,16 @@ import (
 // todo: Comment
 type Api struct {
 	Router *mux.Router
+	DB     *sql.DB
 }
 
 // todo: Comment
-func (a *Api) Initialise() {
+func (a *Api) Initialise(db *sql.DB) {
 	a.Router = mux.NewRouter()
+	a.DB = db
+
+	// Initialise routes
+	a.InitialiseInstructionRoutes()
 }
 
 // todo: Comment

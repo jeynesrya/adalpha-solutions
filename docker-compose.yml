@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  adalpha-backend:
+    image: adalpha
+    environment:
+      PG_HOST: "db"
+      PG_PORT: 5432
+      PG_USER: jeynesrya
+      PG_PASSWORD: s3cr3t!
+      PG_DB_NAME: adalpha
+    depends_on:
+    - db
+    ports:
+    - "8080:8080"
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: adalpha
+      POSTGRES_USER: jeynesrya
+      POSTGRES_PASSWORD: s3cr3t!
+    volumes:
+    - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
