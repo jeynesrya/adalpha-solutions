@@ -1,4 +1,4 @@
-# adalpha-ui
+# ui
 
 ## Project setup
 ```
