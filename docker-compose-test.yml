@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: test-db
+      POSTGRES_USER: test-user
+      POSTGRES_PASSWORD: test-pw
+    ports:
+    - "54321:5432"
+    volumes:
+    - ./initdb-test.sql:/docker-entrypoint-initdb.d/initdb.sql
