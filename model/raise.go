@@ -25,21 +25,30 @@ func (r *Raise) NewRaise(db *sql.DB) error {
 		return err
 	}
 
-	// This will be the same everywhere
-	unitsToRaise := r.Amount / isinValue
-
 	// Get portfolio for isin
 	var currentValue float64
-	db.QueryRow("SELECT amount FROM portfolio WHERE isin=$1", r.Isin).Scan(&currentValue)
+	db.QueryRow("SELECT units FROM portfolio WHERE isin=$1", r.Isin).Scan(&currentValue)
+
+	newValue, err := r.CalculateRaise(currentValue, isinValue)
+	if err != nil {
+		return err
+	}
+
+	// Alter portfolio based on investment price
+	_, err = db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, r.Isin)
+
+	return err
+}
+
+func (r *Raise) CalculateRaise(currentValue, isinValue float64) (float64, error) {
+	// This will be the same everywhere
+	unitsToRaise := r.Amount / isinValue
 
 	newValue := currentValue - unitsToRaise
 	if newValue < 0 {
 		currentValueWorth := currentValue * isinValue
-		return fmt.Errorf("unable to sell units as you only have %f in your portfolio", currentValueWorth)
+		return 0, fmt.Errorf("unable to sell units as you only have %f in your portfolio", currentValueWorth)
 	}
 
-	// Alter portfolio based on investment price
-	_, err = db.Exec("UPDATE portfolio SET amount=$1 WHERE isin=$2", newValue, r.Isin)
-
-	return err
+	return newValue, nil
 }

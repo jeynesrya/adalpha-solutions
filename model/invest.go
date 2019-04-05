@@ -24,17 +24,21 @@ func (i *Invest) NewInvest(db *sql.DB) error {
 		return err
 	}
 
-	// This will be the same everywhere
-	additionalUnits := i.Amount / isinValue
-
 	// Get portfolio for isin
 	var currentValue float64
 	db.QueryRow("SELECT amount FROM portfolio WHERE isin=$1", i.Isin).Scan(&currentValue)
 
-	newValue := additionalUnits + currentValue
+	newValue := i.CalculateInvest(currentValue, isinValue)
 
 	// Alter portfolio based on investment price
 	_, err = db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, i.Isin)
 
 	return err
+}
+
+func (i *Invest) CalculateInvest(currentValue, isinValue float64) float64 {
+	// This will be the same everywhere
+	additionalUnits := i.Amount / isinValue
+
+	return additionalUnits + currentValue
 }
