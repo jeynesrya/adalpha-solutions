@@ -3,24 +3,68 @@ version: '2'
 services:
 
   adalpha-backend:
-    image: adalpha
+    build: .
+    container_name: backend
+    restart: always
     environment:
-      PG_HOST: "db"
+      PG_HOST: "postgres"
       PG_PORT: 5432
       PG_USER: jeynesrya
       PG_PASSWORD: s3cr3t!
       PG_DB_NAME: adalpha
+      ES_HOST: "elasticsearch"
+      ES_PORT: 9200
+      ES_LOG_INDEX: logs
     depends_on:
-    - db
+      - postgres
+      - elasticsearch
     ports:
-    - "8080:8080"
+      - 8080:8080
+    networks:
+      - adalpha
 
-  db:
+  postgres:
     image: postgres
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_DB: adalpha
       POSTGRES_USER: jeynesrya
       POSTGRES_PASSWORD: s3cr3t!
     volumes:
-    - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - adalpha
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.1
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./esdata:/usr/share/elasticsearch/data
+    networks:
+      - adalpha
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.7.1
+    container_name: kibana
+    restart: always
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    networks:
+      - adalpha
+
+networks:
+  adalpha:
+    driver: bridge

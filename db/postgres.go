@@ -29,6 +29,6 @@ func (p *Postgres) Initialise(host string, port int, user string, password strin
 	// Check connection has been made
 	err = p.DB.Ping()
 	if err != nil {
-		log.Fatal("Err: %s", err.Error())
+		log.Fatalf("Err: %s", err.Error())
 	}
 }

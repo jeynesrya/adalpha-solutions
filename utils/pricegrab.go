@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gocolly/colly"
+	"github.com/jeynesrya/adalpha-solutions/es"
 )
 
 var (
@@ -13,6 +15,7 @@ var (
 	parent     = ".mod-tearsheet-overview__quote__bar"
 	childLabel = ".mod-ui-data-list__label"
 	childValue = ".mod-ui-data-list__value"
+	logger     = *es.NewLogger()
 )
 
 func GetIsinPrice(isin string) (float64, error) {
@@ -42,6 +45,7 @@ func GetIsinPrice(isin string) (float64, error) {
 				price, err = strconv.ParseFloat(elem.Text, 64)
 				if err != nil {
 					err = fmt.Errorf("Could not find the isin price.\n%s", err.Error())
+					return false
 				}
 
 				if isGBX {
@@ -55,9 +59,25 @@ func GetIsinPrice(isin string) (float64, error) {
 		})
 	})
 
+	// Are there any errors from the scrape?
+	if err != nil {
+		logger.Error(&es.Log{
+			Package:   "utils",
+			Method:    "GetIsinPrice",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
+		return 0, err
+	}
+
 	err = c.Visit(fmt.Sprintf(url, isin))
 	if err != nil {
-		fmt.Println(err)
+		logger.Error(&es.Log{
+			Package:   "utils",
+			Method:    "GetIsinPrice",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 	}
 
 	return price, err

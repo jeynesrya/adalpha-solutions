@@ -3,7 +3,9 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
+	"github.com/jeynesrya/adalpha-solutions/es"
 	"github.com/jeynesrya/adalpha-solutions/model"
 )
 
@@ -21,12 +23,25 @@ func (a *Api) handleBuyInstruction(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&buy)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleBuyInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 	}
 
 	err = buy.NewBuy(a.DB)
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleBuyInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -41,12 +56,26 @@ func (a *Api) handleInvestInstruction(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&invest)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleInvestInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
+		return
 	}
 
 	err = invest.NewInvest(a.DB)
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleInvestInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -60,6 +89,12 @@ func (a *Api) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&sell)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleSellInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 		return
 	}
 
@@ -67,6 +102,12 @@ func (a *Api) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleSellInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 		return
 	}
 
@@ -81,6 +122,12 @@ func (a *Api) handleRaiseInstruction(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&raise)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleRaiseInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 		return
 	}
 
@@ -88,6 +135,12 @@ func (a *Api) handleRaiseInstruction(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error(&es.Log{
+			Package:   "api",
+			Method:    "handleRaiseInstruction",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 		return
 	}
 

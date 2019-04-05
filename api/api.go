@@ -6,10 +6,13 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jeynesrya/adalpha-solutions/es"
 	"github.com/justinas/alice"
 
 	"github.com/gorilla/mux"
 )
+
+var logger = *es.NewLogger()
 
 // todo: Comment
 type Api struct {
