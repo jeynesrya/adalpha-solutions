@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -12,7 +13,7 @@ import (
 
 const mapping = `
 {
-	"settings":{
+	"settings": {
 		"number_of_shards": 1,
 		"number_of_replicas": 0
 	},
@@ -24,7 +25,7 @@ const mapping = `
 				},
 				"method":{
 					"type":"keyword"
-				}
+				},
 				"message":{
 					"type":"text"
 				},
@@ -42,11 +43,16 @@ type Logger struct {
 }
 
 type Log struct {
-	Package   string
-	Method    string
-	Message   string
-	Timestamp time.Time
+	Package   string    `json:"package"`
+	Method    string    `json:"method"`
+	Message   string    `json:"message"`
+	Timestamp time.Time `json:"timestamp"`
 }
+
+var (
+	esURL = os.Getenv("ES_URL")
+	index = os.Getenv("ES_LOG_INDEX")
+)
 
 func NewLogger() *Logger {
 	// Check if tests are being run
@@ -55,7 +61,6 @@ func NewLogger() *Logger {
 	}
 
 	ctx := context.Background()
-	esURL := "http" + os.Getenv("ES_HOST") + ":" + os.Getenv("ES_PORT")
 
 	client, err := elastic.NewClient(elastic.SetURL(esURL))
 	if err != nil {
@@ -72,14 +77,14 @@ func NewLogger() *Logger {
 	fmt.Printf("Elasticsearch returned with code %d and version %s\n", code, info.Version.Number)
 
 	// Use the IndexExists service to check if a specified index exists.
-	exists, err := client.IndexExists(os.Getenv("ES_LOG_INDEX")).Do(ctx)
+	exists, err := client.IndexExists(index).Do(ctx)
 	if err != nil {
 		// Handle error
 		panic(err)
 	}
 	if !exists {
 		// Create a new index.
-		createIndex, err := client.CreateIndex(os.Getenv("ES_LOG_INDEX")).BodyString(mapping).Do(ctx)
+		createIndex, err := client.CreateIndex(index).BodyString(mapping).Do(ctx)
 		if err != nil {
 			// Handle error
 			panic(err)
@@ -92,9 +97,20 @@ func NewLogger() *Logger {
 	return &Logger{true, client}
 }
 
-func (l *Logger) Error(log *Log) {
+func (l *Logger) Error(errLog *Log) {
 	if !l.enabled {
-		return
+		log.Printf("package: %s, method: %s, message: %s", errLog.Package, errLog.Method, errLog.Message)
 	}
 
+	ctx := context.Background()
+
+	_, err := l.client.Index().
+		Index(index).
+		Type("doc").
+		BodyJson(errLog).
+		Do(ctx)
+
+	if err != nil {
+		log.Printf("Unable to add error to elastic.\n%s", err.Error())
+	}
 }

@@ -35,12 +35,6 @@ func (a *Api) handleBuyInstruction(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		logger.Error(&es.Log{
-			Package:   "api",
-			Method:    "handleBuyInstruction",
-			Message:   err.Error(),
-			Timestamp: time.Now(),
-		})
 		return
 	}
 
@@ -69,12 +63,6 @@ func (a *Api) handleInvestInstruction(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		logger.Error(&es.Log{
-			Package:   "api",
-			Method:    "handleInvestInstruction",
-			Message:   err.Error(),
-			Timestamp: time.Now(),
-		})
 		return
 	}
 
@@ -102,12 +90,6 @@ func (a *Api) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		logger.Error(&es.Log{
-			Package:   "api",
-			Method:    "handleSellInstruction",
-			Message:   err.Error(),
-			Timestamp: time.Now(),
-		})
 		return
 	}
 
@@ -135,12 +117,6 @@ func (a *Api) handleRaiseInstruction(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		logger.Error(&es.Log{
-			Package:   "api",
-			Method:    "handleRaiseInstruction",
-			Message:   err.Error(),
-			Timestamp: time.Now(),
-		})
 		return
 	}
 

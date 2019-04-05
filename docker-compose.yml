@@ -2,8 +2,8 @@ version: '2'
 
 services:
 
-  adalpha-backend:
-    build: .
+  backend:
+    image: adalpha
     container_name: backend
     restart: always
     environment:
@@ -12,8 +12,7 @@ services:
       PG_USER: jeynesrya
       PG_PASSWORD: s3cr3t!
       PG_DB_NAME: adalpha
-      ES_HOST: "elasticsearch"
-      ES_PORT: 9200
+      ES_URL: "http://elasticsearch:9200"
       ES_LOG_INDEX: logs
     depends_on:
       - postgres

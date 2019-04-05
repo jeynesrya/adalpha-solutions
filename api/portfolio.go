@@ -3,9 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
-	"github.com/jeynesrya/adalpha-solutions/es"
 	"github.com/jeynesrya/adalpha-solutions/model"
 )
 
@@ -19,12 +17,6 @@ func (a *Api) handleGetPortfolio(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		logger.Error(&es.Log{
-			Package:   "api",
-			Method:    "handleGetPortfolio",
-			Message:   err.Error(),
-			Timestamp: time.Now(),
-		})
 		return
 	}
 
