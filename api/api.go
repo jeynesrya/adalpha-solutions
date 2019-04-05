@@ -24,6 +24,7 @@ func (a *Api) Initialise(db *sql.DB) {
 
 	// Initialise routes
 	a.InitialiseInstructionRoutes()
+	a.InitialisePortfolioRoutes()
 }
 
 // todo: Comment
