@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS assets (
 
 CREATE TABLE IF NOT EXISTS portfolio (
     isin    VARCHAR REFERENCES assets(isin),
-    amount  NUMERIC
+    units  NUMERIC
 );
 
 INSERT INTO assets VALUES

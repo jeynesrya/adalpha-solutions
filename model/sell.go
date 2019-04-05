@@ -23,7 +23,7 @@ func (s *Sell) NewSell(db *sql.DB) error {
 	}
 
 	// Alter portfolio based on investment price
-	_, err := db.Exec("UPDATE portfolio SET amount=$1 WHERE isin=$2", newValue, s.Isin)
+	_, err := db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, s.Isin)
 
 	return err
 }
