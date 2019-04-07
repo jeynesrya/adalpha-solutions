@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	url        = "https://markets.ft.com/data/funds/tearsheet/summary?s=%s"
+	isinUrl    = "https://markets.ft.com/data/funds/tearsheet/summary?s=%s"
 	parent     = ".mod-tearsheet-overview__quote__bar"
 	childLabel = ".mod-ui-data-list__label"
 	childValue = ".mod-ui-data-list__value"
@@ -70,7 +70,7 @@ func GetIsinPrice(isin string) (float64, error) {
 		return 0, err
 	}
 
-	err = c.Visit(fmt.Sprintf(url, isin))
+	err = c.Visit(fmt.Sprintf(isinUrl, isin))
 	if err != nil {
 		logger.Error(&es.Log{
 			Package:   "utils",

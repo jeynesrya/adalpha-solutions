@@ -16,9 +16,11 @@ type Raise struct {
 }
 
 func (r *Raise) NewRaise(db *sql.DB) error {
-	// TODO : Check the currency (seems important from task brief)
 	if r.Currency != "GBP" {
-		// Alter amount
+		r.Amount = utils.CalculateGBP(r.Currency, r.Amount)
+		if r.Amount == 0 {
+			return fmt.Errorf("Trouble calculating GBP value, see logs.")
+		}
 	}
 
 	// Convert from currency to units
