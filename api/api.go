@@ -4,10 +4,9 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/jeynesrya/adalpha-solutions/es"
-	"github.com/justinas/alice"
+	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"
 )
@@ -32,26 +31,29 @@ func (a *Api) Initialise(db *sql.DB) {
 
 // todo: Comment
 func (a *Api) Run(addr string) {
-	log.Fatal(http.ListenAndServe(addr, alice.New(loggerHandler, recoverHandler).Then(a.Router)))
+	handler := cors.Default().Handler(a.Router)
+
+	//log.Fatal(http.ListenAndServe(addr, alice.New(loggerHandler, recoverHandler).Then(a.Router)))
+	log.Fatal(http.ListenAndServe(addr, handler))
 }
 
-func loggerHandler(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		h.ServeHTTP(w, r)
-		log.Printf("<< %s %s %v", r.Method, r.URL.Path, time.Since(start))
-	})
-}
+// func loggerHandler(h http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		start := time.Now()
+// 		h.ServeHTTP(w, r)
+// 		log.Printf("<< %s %s %v", r.Method, r.URL.Path, time.Since(start))
+// 	})
+// }
 
-func recoverHandler(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		defer func() {
-			if err := recover(); err != nil {
-				log.Printf("panic: %+v", err)
-				http.Error(w, http.StatusText(500), 500)
-			}
-		}()
-		next.ServeHTTP(w, r)
-	}
-	return http.HandlerFunc(fn)
-}
+// func recoverHandler(next http.Handler) http.Handler {
+// 	fn := func(w http.ResponseWriter, r *http.Request) {
+// 		defer func() {
+// 			if err := recover(); err != nil {
+// 				log.Printf("panic: %+v", err)
+// 				http.Error(w, http.StatusText(500), 500)
+// 			}
+// 		}()
+// 		next.ServeHTTP(w, r)
+// 	}
+// 	return http.HandlerFunc(fn)
+// }
