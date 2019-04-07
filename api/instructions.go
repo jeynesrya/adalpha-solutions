@@ -89,7 +89,7 @@ func (a *Api) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
 	err = sell.NewSell(a.DB)
 	if err != nil {
 		// This should be a utility
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 

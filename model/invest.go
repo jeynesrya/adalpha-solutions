@@ -43,7 +43,7 @@ func (i *Invest) NewInvest(db *sql.DB) error {
 	newValue := i.CalculateInvest(currentValue, isinValue)
 
 	// Alter portfolio based on investment price
-	_, err = db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, i.Isin)
+	_, err = db.Exec("UPDATE portfolio SET amount=$1 WHERE isin=$2", newValue, i.Isin)
 	if err != nil {
 		logger.Error(&es.Log{
 			Package:   "model",
