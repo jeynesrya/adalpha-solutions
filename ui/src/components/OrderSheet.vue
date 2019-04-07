@@ -74,6 +74,7 @@ export default class OrderSheet extends Vue {
                                     this.response.message = response.data;
                                     this.showResponse = true;
                                     this.showProgress = false;
+                                    this.$emit("update-values");
                                 });
     }
 }

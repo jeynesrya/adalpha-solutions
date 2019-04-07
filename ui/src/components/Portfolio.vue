@@ -27,7 +27,7 @@
     </table>
     </div>
     <div class="column is-3">
-        <OrderSheet :order="order"/>
+        <OrderSheet :order="order" v-on:update-values="getPortfolio()"/>
     </div>
 </div>
 </template>
