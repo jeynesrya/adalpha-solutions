@@ -16,7 +16,7 @@ type Portfolio struct {
 
 func GetPortfolio(db *sql.DB) ([]Portfolio, error) {
 	// get all from portfolio table (improvement - add investor to db table)
-	rows, err := db.Query("SELECT isin, units FROM portfolio")
+	rows, err := db.Query("SELECT isin, amount FROM portfolio")
 	if err != nil {
 		logger.Error(&es.Log{
 			Package:   "model",

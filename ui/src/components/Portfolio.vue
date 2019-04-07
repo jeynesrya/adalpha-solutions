@@ -36,7 +36,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { PortfolioItem } from '../portfolio';
 import { portfolioService } from '../portfolio.service';
-import { Order } from '../order';
+import { InternalOrder } from '../order';
 import OrderSheet from '@/components/OrderSheet.vue';
 
 
@@ -46,7 +46,7 @@ import OrderSheet from '@/components/OrderSheet.vue';
 })
 export default class Portfolio extends Vue {
     private portfolio: PortfolioItem[] = [];
-    private order: Order = {Isin: "", Type: "", Amount: 0, Currency: ""}
+    private order: InternalOrder = {Isin: "", Type: "", Amount: 0, Currency: ""}
 
     private created() {
         this.getPortfolio();
@@ -56,16 +56,16 @@ export default class Portfolio extends Vue {
         return portfolioService.getPortfolio().then((response) => (this.portfolio = response.data));
     }
     private Buy(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Buy", Amount: 0, Currency: ""}
+        this.order = {Isin: item.Isin, Type: "Buy", Amount: 0, Currency: "N/A"};
     }
     private Sell(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Sell", Amount: 0, Currency: ""}
+        this.order = {Isin: item.Isin, Type: "Sell", Amount: 0, Currency: "N/A"};
     }
     private Invest(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Invest", Amount: 0, Currency: ""}
+        this.order = {Isin: item.Isin, Type: "Invest", Amount: 0, Currency: "GBP"};
     }
     private Raise(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Raise", Amount: 0, Currency: ""}
+        this.order = {Isin: item.Isin, Type: "Raise", Amount: 0, Currency: "GBP"};
     }
 }
 </script>

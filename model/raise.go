@@ -37,7 +37,7 @@ func (r *Raise) NewRaise(db *sql.DB) error {
 
 	// Get portfolio for isin
 	var currentValue float64
-	db.QueryRow("SELECT units FROM portfolio WHERE isin=$1", r.Isin).Scan(&currentValue)
+	db.QueryRow("SELECT amount FROM portfolio WHERE isin=$1", r.Isin).Scan(&currentValue)
 
 	newValue, err := r.CalculateRaise(currentValue, isinValue)
 	if err != nil {
@@ -51,7 +51,7 @@ func (r *Raise) NewRaise(db *sql.DB) error {
 	}
 
 	// Alter portfolio based on investment price
-	_, err = db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, r.Isin)
+	_, err = db.Exec("UPDATE portfolio SET amount=$1 WHERE isin=$2", newValue, r.Isin)
 	if err != nil {
 		logger.Error(&es.Log{
 			Package:   "model",

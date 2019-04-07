@@ -8,8 +8,8 @@ import (
 )
 
 type Buy struct {
-	Isin  string
-	Units float64
+	Isin   string
+	Amount float64
 }
 
 func (b *Buy) NewBuy(db *sql.DB) error {
@@ -21,7 +21,7 @@ func (b *Buy) NewBuy(db *sql.DB) error {
 	newValue := b.CalculateNewBuy(currentValue)
 
 	// Alter portfolio based on investment price
-	_, err := db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, b.Isin)
+	_, err := db.Exec("UPDATE portfolio SET amount=$1 WHERE isin=$2", newValue, b.Isin)
 	if err != nil {
 		logger.Error(&es.Log{
 			Package:   "model",
@@ -35,5 +35,5 @@ func (b *Buy) NewBuy(db *sql.DB) error {
 }
 
 func (b *Buy) CalculateNewBuy(currentValue float64) float64 {
-	return b.Units + currentValue
+	return b.Amount + currentValue
 }

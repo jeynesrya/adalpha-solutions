@@ -30,23 +30,51 @@
     </div>
     </div>
 
-    <div class="field is-grouped">
+    <div class="field is-grouped" v-if="showProgress !== true">
     <div class="control">
-        <button class="button is-link">Submit</button>
+        <button class="button is-link" @click="submit()">Submit</button>
     </div>
-    <div class="control">
-        <button class="button is-text">Cancel</button>
     </div>
+    <div class="column is-12" v-else>
+        <progress class="progress is-small is-primary" max="100"></progress>
+    </div>
+
+    <div class="field" v-if="showResponse === true">
+        <p>{{response.message}}</p>
     </div>
 </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Order } from '../order';
+import { UnitOrder, CurrencyOrder, InternalOrder, Order } from '../order';
+import { portfolioService } from '../portfolio.service';
 
 @Component
 export default class OrderSheet extends Vue {
-    @Prop() order!: Order;    
+    @Prop() order!: InternalOrder;
+
+    protected showProgress = false;
+    protected showResponse = false;
+    protected response = {"code": 0, "message": ""};
+
+    private submit() {
+        this.showProgress = !this.showProgress;
+        let orderToSubmit: Order;
+
+        if (this.order.Currency === "N/A") {
+            orderToSubmit = {"Isin": this.order.Isin, "Amount": Number(this.order.Amount)}
+        } else {
+            orderToSubmit = {"Isin": this.order.Isin, "Amount": Number(this.order.Amount), "Currency": this.order.Currency}
+        }
+
+        return portfolioService.updatePortfolio(orderToSubmit, this.order.Type.toLowerCase())
+                                .then((response) => {
+                                    this.response.code = response.status;
+                                    this.response.message = response.data;
+                                    this.showResponse = true;
+                                    this.showProgress = false;
+                                });
+    }
 }
 </script>
