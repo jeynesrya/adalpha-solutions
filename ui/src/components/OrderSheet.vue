@@ -26,7 +26,7 @@
     <div class="field">
     <label class="label">Currency</label>
     <div class="control">
-        <input class="input" type="text" v-model="order.Currency">
+        <input class="input" type="text" v-model="order.Currency" :disabled='order.Currency == "N/A"'>
     </div>
     </div>
 
