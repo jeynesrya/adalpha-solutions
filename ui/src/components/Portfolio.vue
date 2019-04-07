@@ -1,5 +1,6 @@
 <template>
 <div class=columns>
+    <div class="column is-1"></div>
     <div class="column is-7">
     <h1 class="title">Portfolio</h1>
     <table class="table">
@@ -7,7 +8,7 @@
             <tr>
                 <th>Isin</th>
                 <th>Units</th>
-                <th>Current Price</th>
+                <th>Current Price (GBP)</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -46,7 +47,7 @@ import OrderSheet from '@/components/OrderSheet.vue';
 })
 export default class Portfolio extends Vue {
     private portfolio: PortfolioItem[] = [];
-    private order: InternalOrder = {Isin: "", Type: "", Amount: 0, Currency: ""}
+    private order: InternalOrder = {Isin: '', Type: '', Amount: 0, Currency: ''};
 
     private created() {
         this.getPortfolio();
@@ -55,17 +56,17 @@ export default class Portfolio extends Vue {
         this.portfolio = [];
         return portfolioService.getPortfolio().then((response) => (this.portfolio = response.data));
     }
-    private Buy(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Buy", Amount: 0, Currency: "N/A"};
+    private Buy(item: PortfolioItem) {
+        this.order = {Isin: item.Isin, Type: 'Buy', Amount: 0, Currency: 'N/A'};
     }
-    private Sell(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Sell", Amount: 0, Currency: "N/A"};
+    private Sell(item: PortfolioItem) {
+        this.order = {Isin: item.Isin, Type: 'Sell', Amount: 0, Currency: 'N/A'};
     }
-    private Invest(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Invest", Amount: 0, Currency: "GBP"};
+    private Invest(item: PortfolioItem) {
+        this.order = {Isin: item.Isin, Type: 'Invest', Amount: 0, Currency: 'GBP'};
     }
-    private Raise(item:PortfolioItem) {
-        this.order = {Isin: item.Isin, Type: "Raise", Amount: 0, Currency: "GBP"};
+    private Raise(item: PortfolioItem) {
+        this.order = {Isin: item.Isin, Type: 'Raise', Amount: 0, Currency: 'GBP'};
     }
 }
 </script>

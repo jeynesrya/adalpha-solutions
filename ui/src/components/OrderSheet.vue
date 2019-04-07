@@ -52,20 +52,20 @@ import { portfolioService } from '../portfolio.service';
 
 @Component
 export default class OrderSheet extends Vue {
-    @Prop() order!: InternalOrder;
+    @Prop() public order!: InternalOrder;
 
     protected showProgress = false;
     protected showResponse = false;
-    protected response = {"code": 0, "message": ""};
+    protected response = {code: 0, message: ''};
 
     private submit() {
         this.showProgress = !this.showProgress;
         let orderToSubmit: Order;
 
-        if (this.order.Currency === "N/A") {
-            orderToSubmit = {"Isin": this.order.Isin, "Amount": Number(this.order.Amount)}
+        if (this.order.Currency === 'N/A') {
+            orderToSubmit = {Isin: this.order.Isin, Amount: Number(this.order.Amount)};
         } else {
-            orderToSubmit = {"Isin": this.order.Isin, "Amount": Number(this.order.Amount), "Currency": this.order.Currency}
+            orderToSubmit = {Isin: this.order.Isin, Amount: Number(this.order.Amount), Currency: this.order.Currency};
         }
 
         return portfolioService.updatePortfolio(orderToSubmit, this.order.Type.toLowerCase())
@@ -74,7 +74,7 @@ export default class OrderSheet extends Vue {
                                     this.response.message = response.data;
                                     this.showResponse = true;
                                     this.showProgress = false;
-                                    this.$emit("update-values");
+                                    this.$emit('update-values');
                                 });
     }
 }

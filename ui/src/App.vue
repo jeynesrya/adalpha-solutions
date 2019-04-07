@@ -7,6 +7,7 @@
         </div>
       </div>
     </nav>
+    <hr>
     <Portfolio/>
   </div>
 </template>
