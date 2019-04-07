@@ -2,7 +2,9 @@ package model
 
 import (
 	"database/sql"
+	"time"
 
+	"github.com/jeynesrya/adalpha-solutions/es"
 	"github.com/jeynesrya/adalpha-solutions/utils"
 )
 
@@ -21,6 +23,12 @@ func (i *Invest) NewInvest(db *sql.DB) error {
 	// Convert from currency to units
 	isinValue, err := utils.GetIsinPrice(i.Isin)
 	if err != nil {
+		logger.Error(&es.Log{
+			Package:   "model",
+			Method:    "NewInvest",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 		return err
 	}
 
@@ -32,6 +40,14 @@ func (i *Invest) NewInvest(db *sql.DB) error {
 
 	// Alter portfolio based on investment price
 	_, err = db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, i.Isin)
+	if err != nil {
+		logger.Error(&es.Log{
+			Package:   "model",
+			Method:    "NewBuy",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
+	}
 
 	return err
 }

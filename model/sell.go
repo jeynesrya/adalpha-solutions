@@ -3,6 +3,9 @@ package model
 import (
 	"database/sql"
 	"fmt"
+	"time"
+
+	"github.com/jeynesrya/adalpha-solutions/es"
 )
 
 type Sell struct {
@@ -18,10 +21,24 @@ func (s *Sell) NewSell(db *sql.DB) error {
 
 	newValue, err := s.CalculateSell(currentValue)
 	if err != nil {
+		logger.Error(&es.Log{
+			Package:   "model",
+			Method:    "NewSell",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
 		return err
 	}
 	// Alter portfolio based on investment price
 	_, err = db.Exec("UPDATE portfolio SET units=$1 WHERE isin=$2", newValue, s.Isin)
+	if err != nil {
+		logger.Error(&es.Log{
+			Package:   "model",
+			Method:    "NewSell",
+			Message:   err.Error(),
+			Timestamp: time.Now(),
+		})
+	}
 
 	return err
 }

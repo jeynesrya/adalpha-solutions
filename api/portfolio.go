@@ -17,6 +17,7 @@ func (a *Api) handleGetPortfolio(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// This should be a utility
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
