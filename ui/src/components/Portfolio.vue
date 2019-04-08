@@ -53,14 +53,13 @@ export default class Portfolio extends Vue {
     private portfolio: PortfolioItem[] = [];
     private order: InternalOrder = {Isin: '', Type: '', Amount: 0, Currency: ''};
     private showTable = false;
-    private loadingMsg = "Loading data... Establishing current price of your asset(s)";
+    private loadingMsg = 'Loading data... Establishing current price of your asset(s)';
 
     private created() {
         this.getPortfolio();
     }
     private getPortfolio() {
         this.showTable = false;
-        this.loadingMsg = "Updating table... Establishing current price of your asset(s)";
         this.portfolio = [];
         return portfolioService.getPortfolio().then((response) => {
             this.portfolio = response.data;
