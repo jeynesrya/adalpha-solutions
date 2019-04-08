@@ -9,7 +9,7 @@ import (
 func TestRaise(t *testing.T) {
 	db := GetTestDB()
 
-	r := model.Raise{"IE00B52L4369", 10, "GBR"}
+	r := model.Raise{"IE00B52L4369", 10, "GBP"}
 
 	err := r.NewRaise(db)
 	if err != nil {
@@ -19,7 +19,7 @@ func TestRaise(t *testing.T) {
 
 func TestCalculateRaise(t *testing.T) {
 	// todo: multiple with failures
-	r := model.Raise{"GB00BQ1YHQ70", 1500, "GBR"}
+	r := model.Raise{"GB00BQ1YHQ70", 1500, "GBP"}
 
 	val, err := r.CalculateRaise(2000, 2)
 	if err != nil {

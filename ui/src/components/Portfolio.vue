@@ -3,7 +3,7 @@
     <div class="column is-1"></div>
     <div class="column is-7">
     <h1 class="title">Portfolio</h1>
-    <table class="table">
+    <table class="table" v-if="showTable === true">
         <thead>
             <tr>
                 <th>Isin</th>
@@ -26,6 +26,10 @@
             </tr>
         </tbody>
     </table>
+    <div class="column is-12" v-else>
+        <p>{{loadingMsg}}</p>
+        <progress class="progress is-small is-primary" max="100"></progress>
+    </div>
     </div>
     <div class="column is-3">
         <OrderSheet :order="order" v-on:update-values="getPortfolio()"/>
@@ -48,13 +52,19 @@ import OrderSheet from '@/components/OrderSheet.vue';
 export default class Portfolio extends Vue {
     private portfolio: PortfolioItem[] = [];
     private order: InternalOrder = {Isin: '', Type: '', Amount: 0, Currency: ''};
+    private showTable = false;
+    private loadingMsg = 'Loading data... Establishing current price of your asset(s)';
 
     private created() {
         this.getPortfolio();
     }
     private getPortfolio() {
+        this.showTable = false;
         this.portfolio = [];
-        return portfolioService.getPortfolio().then((response) => (this.portfolio = response.data));
+        return portfolioService.getPortfolio().then((response) => {
+            this.portfolio = response.data;
+            this.showTable = true;
+        });
     }
     private Buy(item: PortfolioItem) {
         this.order = {Isin: item.Isin, Type: 'Buy', Amount: 0, Currency: 'N/A'};

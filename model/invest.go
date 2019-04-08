@@ -16,11 +16,10 @@ type Invest struct {
 }
 
 func (i *Invest) NewInvest(db *sql.DB) error {
-	// TODO : Check the currency (seems important from task brief)
 	if i.Currency != "GBP" {
 		i.Amount = utils.CalculateGBP(i.Currency, i.Amount)
 		if i.Amount == 0 {
-			return fmt.Errorf("Trouble calculating GBP value, see logs.")
+			return fmt.Errorf("trouble calculating GBP value, see logs")
 		}
 	}
 

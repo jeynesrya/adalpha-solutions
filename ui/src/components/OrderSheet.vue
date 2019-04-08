@@ -80,7 +80,7 @@ export default class OrderSheet extends Vue {
                                     this.response.code = error.response.status;
                                     this.response.message = error.response.data;
                                     this.showResponse = true;
-                                    this.showProgress = false;                                    
+                                    this.showProgress = false;
                                 });
     }
 }

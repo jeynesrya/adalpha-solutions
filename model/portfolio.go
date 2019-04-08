@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/jeynesrya/adalpha-solutions/es"
+	"github.com/jeynesrya/adalpha-solutions/utils"
 )
 
 type Portfolio struct {
@@ -39,6 +40,20 @@ func GetPortfolio(db *sql.DB) ([]Portfolio, error) {
 			})
 			return nil, err
 		}
+		// Establish currentWorth
+		isinValue, err := utils.GetIsinPrice(singleRow.Isin)
+		if err != nil {
+			logger.Error(&es.Log{
+				Package:   "model",
+				Method:    "GetPortfolio",
+				Message:   err.Error(),
+				Timestamp: time.Now(),
+			})
+
+			isinValue = 0
+		}
+
+		singleRow.CurrentWorth = isinValue * singleRow.Units
 		investorPortfolio = append(investorPortfolio, singleRow)
 	}
 

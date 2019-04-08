@@ -9,7 +9,7 @@ import (
 func TestInvest(t *testing.T) {
 	db := GetTestDB()
 
-	i := model.Invest{"GB00BQ1YHQ70", 2000, "GBR"}
+	i := model.Invest{"GB00BQ1YHQ70", 2000, "GBP"}
 
 	err := i.NewInvest(db)
 	if err != nil {
@@ -19,7 +19,7 @@ func TestInvest(t *testing.T) {
 }
 
 func TestCalculateInvest(t *testing.T) {
-	i := model.Invest{"GB00BQ1YHQ70", 200, "GBR"}
+	i := model.Invest{"GB00BQ1YHQ70", 200, "GBP"}
 
 	val := i.CalculateInvest(1000, 2)
 
