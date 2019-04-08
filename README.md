@@ -42,7 +42,9 @@ are trying to receive from your holding.
 - go
 
 ### Running the application
-./run-app.sh
+`./run-app.sh`
+
+Once running, the application should be available at `localhost:8080` and `127.0.0.1:8080`.
 
 ### Testing the application
-./run-tests.sh
+`./run-tests.sh` 
