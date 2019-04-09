@@ -9,14 +9,15 @@ import (
 	"github.com/jeynesrya/adalpha-solutions/model"
 )
 
-func (a *Api) InitialiseInstructionRoutes() {
+// InitialiseInstructionRoutes used to initialse four instructions
+func (a *API) InitialiseInstructionRoutes() {
 	a.Router.HandleFunc("/instruction/buy", a.handleBuyInstruction).Methods("POST")
 	a.Router.HandleFunc("/instruction/invest", a.handleInvestInstruction).Methods("POST")
 	a.Router.HandleFunc("/instruction/sell", a.handleSellInstruction).Methods("POST")
 	a.Router.HandleFunc("/instruction/raise", a.handleRaiseInstruction).Methods("POST")
 }
 
-func (a *Api) handleBuyInstruction(w http.ResponseWriter, r *http.Request) {
+func (a *API) handleBuyInstruction(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
 	var buy model.Buy
@@ -43,7 +44,7 @@ func (a *Api) handleBuyInstruction(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (a *Api) handleInvestInstruction(w http.ResponseWriter, r *http.Request) {
+func (a *API) handleInvestInstruction(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
 	var invest model.Invest
@@ -70,7 +71,7 @@ func (a *Api) handleInvestInstruction(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Invest was successful."))
 }
 
-func (a *Api) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
+func (a *API) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
 	var sell model.Sell
@@ -97,7 +98,7 @@ func (a *Api) handleSellInstruction(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Sell was successful."))
 }
 
-func (a *Api) handleRaiseInstruction(w http.ResponseWriter, r *http.Request) {
+func (a *API) handleRaiseInstruction(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
 	var raise model.Raise

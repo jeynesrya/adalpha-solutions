@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"log"
 
+	// Used to inject postgres into sql db
 	_ "github.com/lib/pq"
 )
 
+// Postgres struct used to carry around the sql.DB pointer
 type Postgres struct {
 	DB *sql.DB
 }
 
+// Initialise used to set up connection to Postgres
 func (p *Postgres) Initialise(host string, port int, user string, password string, dbname string) {
 
 	// todo: return error.

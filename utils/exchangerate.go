@@ -13,6 +13,7 @@ var (
 	exchangerateURL = "https://api.exchangeratesapi.io/latest?base=GBP&symbols=%s"
 )
 
+// CalculateGBP used to gather exchange rate and convert to GBP
 func CalculateGBP(currency string, amount float64) float64 {
 	// get exchange rates
 	rate, err := GetExchangeRate(currency)
@@ -24,6 +25,7 @@ func CalculateGBP(currency string, amount float64) float64 {
 	return gbp
 }
 
+// GetExchangeRate used to communicate with the exchange rate API and return the value
 func GetExchangeRate(currency string) (float64, error) {
 	exchangerateURL = GenerateExchangeRateURL(currency)
 
@@ -60,6 +62,7 @@ func GetExchangeRate(currency string) (float64, error) {
 	return rate, nil
 }
 
+// GenerateExchangeRateURL used to build the exchange rate from the currency entered
 func GenerateExchangeRateURL(currency string) string {
 	return fmt.Sprintf(exchangerateURL, currency)
 }

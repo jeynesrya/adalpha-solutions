@@ -7,11 +7,13 @@ import (
 	"github.com/jeynesrya/adalpha-solutions/es"
 )
 
+// Buy struct used to store Isin and Amount
 type Buy struct {
 	Isin   string
 	Amount float64
 }
 
+// NewBuy used to communicate with DB to add more value to an asset
 func (b *Buy) NewBuy(db *sql.DB) error {
 
 	// Get portfolio for isin
@@ -34,6 +36,7 @@ func (b *Buy) NewBuy(db *sql.DB) error {
 	return err
 }
 
+// CalculateNewBuy used to add the requested amount to currentValue
 func (b *Buy) CalculateNewBuy(currentValue float64) float64 {
 	return b.Amount + currentValue
 }

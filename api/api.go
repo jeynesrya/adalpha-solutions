@@ -13,14 +13,14 @@ import (
 
 var logger = *es.NewLogger()
 
-// todo: Comment
-type Api struct {
+// API struct used for passing around the Router and Postgres
+type API struct {
 	Router *mux.Router
 	DB     *sql.DB
 }
 
-// todo: Comment
-func (a *Api) Initialise(db *sql.DB) {
+// Initialise method used to attach PostgresDB to API struct and initialise routes
+func (a *API) Initialise(db *sql.DB) {
 	a.Router = mux.NewRouter()
 	a.DB = db
 
@@ -29,8 +29,8 @@ func (a *Api) Initialise(db *sql.DB) {
 	a.InitialisePortfolioRoutes()
 }
 
-// todo: Comment
-func (a *Api) Run(addr string) {
+// Run method used to set up cors for UI and run the http web server
+func (a *API) Run(addr string) {
 	handler := cors.Default().Handler(a.Router)
 
 	log.Fatal(http.ListenAndServe(addr, handler))

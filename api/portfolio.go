@@ -7,11 +7,12 @@ import (
 	"github.com/jeynesrya/adalpha-solutions/model"
 )
 
-func (a *Api) InitialisePortfolioRoutes() {
+// InitialisePortfolioRoutes used to initialise portfolio endpoint(s)
+func (a *API) InitialisePortfolioRoutes() {
 	a.Router.HandleFunc("/portfolio", a.handleGetPortfolio).Methods("GET")
 }
 
-func (a *Api) handleGetPortfolio(w http.ResponseWriter, r *http.Request) {
+func (a *API) handleGetPortfolio(w http.ResponseWriter, r *http.Request) {
 	portfolio, err := model.GetPortfolio(a.DB)
 
 	if err != nil {

@@ -9,17 +9,19 @@ import (
 	"github.com/jeynesrya/adalpha-solutions/utils"
 )
 
+// Raise struct used to store Isin, Amount and Currency
 type Raise struct {
 	Isin     string
 	Amount   float64
 	Currency string
 }
 
+// NewRaise used to communicate with the DB to initiate the raise instruction
 func (r *Raise) NewRaise(db *sql.DB) error {
 	if r.Currency != "GBP" {
 		r.Amount = utils.CalculateGBP(r.Currency, r.Amount)
 		if r.Amount == 0 {
-			return fmt.Errorf("Trouble calculating GBP value, see logs.")
+			return fmt.Errorf("trouble calculating GBP value, see logs")
 		}
 	}
 
@@ -64,6 +66,7 @@ func (r *Raise) NewRaise(db *sql.DB) error {
 	return err
 }
 
+// CalculateRaise used to establish amount of units and handle if investor can't raise the amount requested
 func (r *Raise) CalculateRaise(currentValue, isinValue float64) (float64, error) {
 	// This will be the same everywhere
 	unitsToRaise := r.Amount / isinValue
