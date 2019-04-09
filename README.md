@@ -46,6 +46,7 @@ are trying to receive from your holding.
 
 Once running, the application should be available at `localhost:8080` and `127.0.0.1:8080`.
 Kibana is available to view application logs at `localhost:5601` and `127.0.0.1:5601`
+    The logs will appear in the index "logs" but you will only be able to find them when the first error has occurred.
 
 ### Testing the application
 `./run-tests.sh` 
