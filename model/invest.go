@@ -9,12 +9,14 @@ import (
 	"github.com/jeynesrya/adalpha-solutions/utils"
 )
 
+// Invest struct used to store Isin, Amount and Currency
 type Invest struct {
 	Isin     string
 	Amount   float64
 	Currency string
 }
 
+// NewInvest used to communicate with the DB to initiate the invest instruction
 func (i *Invest) NewInvest(db *sql.DB) error {
 	if i.Currency != "GBP" {
 		i.Amount = utils.CalculateGBP(i.Currency, i.Amount)
@@ -55,6 +57,7 @@ func (i *Invest) NewInvest(db *sql.DB) error {
 	return err
 }
 
+// CalculateInvest used to calculate the amount of units to add and then adds it on
 func (i *Invest) CalculateInvest(currentValue, isinValue float64) float64 {
 	// This will be the same everywhere
 	additionalUnits := i.Amount / isinValue

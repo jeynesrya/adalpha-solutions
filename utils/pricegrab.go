@@ -11,13 +11,14 @@ import (
 )
 
 var (
-	isinUrl    = "https://markets.ft.com/data/funds/tearsheet/summary?s=%s"
+	isinURL    = "https://markets.ft.com/data/funds/tearsheet/summary?s=%s"
 	parent     = ".mod-tearsheet-overview__quote__bar"
 	childLabel = ".mod-ui-data-list__label"
 	childValue = ".mod-ui-data-list__value"
 	logger     = *es.NewLogger()
 )
 
+// GetIsinPrice is used to html scrape the asset price from the market.ft website and return it
 func GetIsinPrice(isin string) (float64, error) {
 
 	c := colly.NewCollector(colly.AllowedDomains("markets.ft.com"))
@@ -70,7 +71,7 @@ func GetIsinPrice(isin string) (float64, error) {
 		return 0, err
 	}
 
-	err = c.Visit(fmt.Sprintf(isinUrl, isin))
+	err = c.Visit(fmt.Sprintf(isinURL, isin))
 	if err != nil {
 		logger.Error(&es.Log{
 			Package:   "utils",

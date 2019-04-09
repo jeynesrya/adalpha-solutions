@@ -9,14 +9,15 @@ import (
 	"github.com/jeynesrya/adalpha-solutions/utils"
 )
 
+// Portfolio struct used to store Isin, Units and Currency
 type Portfolio struct {
 	Isin         string
 	Units        float64
 	CurrentWorth float64
 }
 
+// GetPortfolio used to get all the PortfolioItems from the DB
 func GetPortfolio(db *sql.DB) ([]Portfolio, error) {
-	// get all from portfolio table (improvement - add investor to db table)
 	rows, err := db.Query("SELECT isin, amount FROM portfolio")
 	if err != nil {
 		logger.Error(&es.Log{

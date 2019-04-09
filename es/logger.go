@@ -37,11 +37,13 @@ const mapping = `
 	}
 }`
 
+// Logger struct used to establish whether logger is to be used and also carries the initialised client
 type Logger struct {
 	enabled bool
 	client  *elastic.Client
 }
 
+// Log struct used for setting up a standardised log output
 type Log struct {
 	Package   string    `json:"package"`
 	Method    string    `json:"method"`
@@ -54,6 +56,7 @@ var (
 	index = os.Getenv("ES_LOG_INDEX")
 )
 
+// NewLogger used to set up a client and create an index if it doesn't already exist
 func NewLogger() *Logger {
 	// Check if tests are being run
 	if flag.Lookup("test.v") != nil {

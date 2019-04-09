@@ -30,7 +30,7 @@ func main() {
 		os.Getenv("PG_DB_NAME"),
 	)
 
-	a := api.Api{}
+	a := api.API{}
 	a.Initialise(db.DB)
 
 	// Run application
